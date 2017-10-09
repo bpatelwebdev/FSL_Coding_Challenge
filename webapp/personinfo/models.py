@@ -11,7 +11,7 @@ class Household(models.Model):
         return self.city
 
 class Person(models.Model):
-    household = models.ForeignKey(Household, on_delete = models.CASCADE)
+    household = models.ForeignKey(Household, on_delete = models.CASCADE, null=True)
     first_name = models.CharField(max_length=10)
     last_name = models.CharField(max_length=10)
     email = models.EmailField(max_length=50)
@@ -23,11 +23,11 @@ class Person(models.Model):
 
 
 class Vehicle(models.Model):
-    person = models.ForeignKey(Person, on_delete=models.CASCADE)
+    person = models.ForeignKey(Person, on_delete=models.CASCADE, null=True)
     make = models.CharField(max_length=50)
     model_name = models.CharField(max_length = 20)
     year = models.IntegerField()
-    liceance_plate = models.CharField(max_length= 20)
+    liceance_plate = models.CharField(max_length= 20,)
 
     def __str__(self):
         return self.model_name

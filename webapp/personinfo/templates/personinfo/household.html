@@ -1,0 +1,12 @@
+<html>
+  <head>
+    <title>My app</title>
+  </head>
+  <body>
+    <form method='POST' action="{% url 'personview' %}">
+      {% csrf_token %}
+      {{form}}
+      <button type='submit'>Next</button>
+    </form>
+  </body>
+</html>
