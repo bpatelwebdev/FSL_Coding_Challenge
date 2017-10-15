@@ -24,6 +24,7 @@ class Person(models.Model):
 
 class Vehicle(models.Model):
     person = models.ForeignKey(Person, on_delete=models.CASCADE, null=True)
+    household = models.ForeignKey(Household, on_delete=models.CASCADE, null=True)
     make = models.CharField(max_length=50)
     model_name = models.CharField(max_length = 20)
     year = models.IntegerField()

@@ -1,14 +1,26 @@
 <html>
   <head>
-    <title>My app</title>
+    <title>Show forms</title>
   </head>
   <body>
-    <h2>Address:{{H.address}}</h2>
-    <h2>Zipcode:{{H.zipcode}}</h2>
-    <h2>City:{{H.city}}</h2>
-    <h2>State:{{H.state}}</h2>
-    <h2>Num of bedrooms:{{H.bedrooms}}</h2>
 
+    <ul>
+      <li>Address: {{tempHousehold.household.Address}}</li>
+      <li>Zipcode: {{tempHousehold.household.Zipcode}}</li>
+      <li>City: {{tempHousehold.household.City}}</li>
+      <li>State: {{tempHousehold.household.State}}</li>
+      <li>Bedrooms: {{tempHousehold.household.Bedrooms}}</li>
+      <li>Firstname: {{tempHousehold.person.Firstname}}</li>
+      <li>Lastname: {{tempHousehold.person.Lastname}}</li>
+      <li>Email: {{tempHousehold.person.Email}}</li>
+      <li>Age: {{tempHousehold.person.Age}}</li>
+      <li>Gender: {{tempHousehold.person.Gender}}</li>
+      <li>Make: {{tempHousehold.vehicle.Make}}</li>
+      <li>Modelname: {{tempHousehold.vehicle.Modelname}}</li>
+      <li>Year: {{tempHousehold.vehicle.Year}}</li>
+      <li>Licenceplate: {{tempHousehold.vehicle.Licenceplate}}</li>
+    </ul>
+    <a href="/savedata">Save data</a>
 
 
   </body>

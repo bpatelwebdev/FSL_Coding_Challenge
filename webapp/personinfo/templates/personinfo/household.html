@@ -1,11 +1,20 @@
 <html>
   <head>
-    <title>My app</title>
+    <title>My app form1</title>
   </head>
   <body>
-    <form method='POST' action="{% url 'personview' %}">
+    <form method='POST' action="">
       {% csrf_token %}
-      {{form}}
+      <label>Address:</label>
+        <input type="text" name="Address" required><br/>
+      <label>Zipcode:</label>
+        <input type="number" name="Zipcode" required><br/>
+      <label>City:</label>
+        <input type="text" name="City" required><br/>
+      <label>State:</label>
+        <input type="text" name="State" required><br/>
+      <label>Bedrooms:</label>
+        <input type="number" name="Bedrooms" required><br/>
       <button type='submit'>Next</button>
     </form>
   </body>
