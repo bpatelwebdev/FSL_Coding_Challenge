@@ -10,15 +10,19 @@
       <li>City: {{tempHousehold.household.City}}</li>
       <li>State: {{tempHousehold.household.State}}</li>
       <li>Bedrooms: {{tempHousehold.household.Bedrooms}}</li>
-      <li>Firstname: {{tempHousehold.person.Firstname}}</li>
-      <li>Lastname: {{tempHousehold.person.Lastname}}</li>
-      <li>Email: {{tempHousehold.person.Email}}</li>
-      <li>Age: {{tempHousehold.person.Age}}</li>
-      <li>Gender: {{tempHousehold.person.Gender}}</li>
-      <li>Make: {{tempHousehold.vehicle.Make}}</li>
-      <li>Modelname: {{tempHousehold.vehicle.Modelname}}</li>
-      <li>Year: {{tempHousehold.vehicle.Year}}</li>
-      <li>Licenceplate: {{tempHousehold.vehicle.Licenceplate}}</li>
+      {%for person in tempHousehold.persons%}
+        <li>Firstname: {{person.Firstname}}</li>
+        <li>Lastname: {{person.Lastname}}</li>
+        <li>Email: {{person.Email}}</li>
+        <li>Age: {{person.Age}}</li>
+        <li>Gender: {{person.Gender}}</li>
+      {%endfor%}
+      {%for vehicle in tempHousehold.vehicles%}
+        <li>Make: {{vehicle.Make}}</li>
+        <li>Modelname: {{vehicle.Modelname}}</li>
+        <li>Year: {{vehicle.Year}}</li>
+        <li>Licenceplate: {{vehicle.Licenceplate}}</li>
+      {%endfor%}
     </ul>
     <a href="/savedata">Save data</a>
 

@@ -9,16 +9,9 @@ from .models import Household, Person, Vehicle
 #     return render(request, 'personinfo/household.html', {'form': form})
 
 tempHousehold = {
-<<<<<<< HEAD
-    'household': {'Address':'','Zipcode':'','City':'','State':'','Bedrooms':''},
-    'persons': [{'Firstname':'','Lastname':'','Email':'','Age':'','Gender':'' }],
-    'vehicle':[{'Make':'','Modelname':'','Year':'','Licenceplate':''}],
-
-=======
     'household': {'Address': '', 'Zipcode': '', 'City': '', 'State': '', 'Bedrooms': ''},
-    'persons': [{'Firstname': "", 'Lastname': "", 'Email': "", 'Age': "", 'Gender': ""}],
-    'vehicles': [{'Make': '', 'Modelname': "", 'Year': "", 'Licenceplate': ""}],
->>>>>>> 4119b28774f179dd4bb340fa5e62e7d97de870d2
+    'persons': [{'Firstname': '', 'Lastname':'', 'Email': '', 'Age': '', 'Gender': ''}],
+    'vehicles': [{'Make': '', 'Modelname': '', 'Year': '', 'Licenceplate': ''}],
 }
 
 
@@ -74,7 +67,7 @@ def personview(request):
             'Gender': request.POST['Gender']
         }
         tempHousehold['persons'].append(person)
-        print(tempHousehold['person'])
+        print(tempHousehold['persons'])
 
         return redirect("/vehicleview")
 
@@ -91,11 +84,15 @@ def vehicleview(request):
         #     #print("form is valid")
         #     data = form.save()
         #     return redirect("/listdata")
-        tempHousehold['vehicle']['Make'].append(request.POST['Make'])
-        tempHousehold['vehicle']['Modelname'].append(request.POST['Modelname'])
-        tempHousehold['vehicle']['Year'].append(request.POST['Year'])
-        tempHousehold['vehicle']['Licenceplate'].append(request.POST['Licenceplate'])
-        print(tempHousehold['vehicle']['Make'])
+        vehicle = {
+            'Make':request.POST['Make'],
+            'Modelname':request.POST['Modelname'],
+            'Year':request.POST['Year'],
+            'Licenceplate':request.POST['Licenceplate']
+
+        }
+        tempHousehold['vehicles'].append(vehicle)
+        print(tempHousehold['vehicles'])
 
         return redirect("/showforms")
 
@@ -109,16 +106,6 @@ def showforms(request):
 
 
 def savedata(request):
-<<<<<<< HEAD
-    form1 = Household(address=tempHousehold['household']['Address'],zipcode=tempHousehold['household']['Zipcode'],city=tempHousehold['household']['City'],state=tempHousehold['household']['State'],bedrooms=tempHousehold['household']['Bedrooms'])
-    form1.save()
-    for person in tempHousehold['persons']:
-        dbperson = Person(household=form1,
-        first_name=perso,last_name=tempHousehold['person']['Lastname'][i],email=tempHousehold['person']['Email'][i],age=tempHousehold['person']['Age'][i],gender=tempHousehold['person']['Gender'][i])
-    for i in range(len(tempHousehold['person']['Firstname'])):
-        form2 = Person()
-        form2.save()
-=======
     dbHousehold = Household(address=tempHousehold['household']['Address'],
                             zipcode=tempHousehold['household']['Zipcode'],
                             city=tempHousehold['household']['City'], state=tempHousehold['household']['State'],
@@ -130,11 +117,10 @@ def savedata(request):
                           last_name=person['Lastname'], email=person['Email'],
                           age=person['Age'], gender=person['Gender'])
         dbperson.save()
->>>>>>> 4119b28774f179dd4bb340fa5e62e7d97de870d2
-    for i in range(len(tempHousehold['vehicle']['Make'])):
-        form3 = Vehicle(person=form2, household=form1, make=tempHousehold['vehicle']['Make'][i],
-                        model_name=tempHousehold['vehicle']['Modelname'][i], year=tempHousehold['vehicle']['Year'][i],
-                        liceance_plate=tempHousehold['vehicle']['Licenceplate'][i])
-        form3.save()
+    for vehicle in tempHousehold['vehicles']:
+        dbvehicle = Vehicle(person=dbperson, household=dbHousehold, make=vehicle['Make'],
+                        model_name=vehicle['Modelname'], year=vehicle['Year'],
+                        liceance_plate=vehicle['Licenceplate'])
+        dbvehicle.save()
 
     return render(request, 'personinfo/list.html')
