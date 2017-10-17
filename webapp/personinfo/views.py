@@ -1,7 +1,6 @@
-from django.shortcuts import render,redirect
-from .forms import householdform,personform,vehicleform
-from .models import Household,Person,Vehicle
-from django.http import HttpResponseRedirect
+from django.shortcuts import render, redirect
+
+from .models import Household, Person, Vehicle
 
 # Create your views here.
 
@@ -10,16 +9,13 @@ from django.http import HttpResponseRedirect
 #     return render(request, 'personinfo/household.html', {'form': form})
 
 tempHousehold = {
-    'household': {'Address':'','Zipcode':'','City':'','State':'','Bedrooms':''},
-    'person': {'Firstname':[],'Lastname':[],'Email':[],'Age':[],'Gender':[] },
-    'vehicle':{'Make':[],'Modelname':[],'Year':[],'Licenceplate':[]},
-
+    'household': {'Address': '', 'Zipcode': '', 'City': '', 'State': '', 'Bedrooms': ''},
+    'persons': [{'Firstname': "", 'Lastname': "", 'Email': "", 'Age': "", 'Gender': ""}],
+    'vehicles': [{'Make': '', 'Modelname': "", 'Year': "", 'Licenceplate': ""}],
 }
 
 
-
 def householdview(request):
-
     if request.method == "POST":
         # form = householdform(request.POST)
         # if form.is_valid():
@@ -37,12 +33,11 @@ def householdview(request):
         # State = request.POST['State']
         # Bedrooms = request.POST['Bedrooms']
 
-        tempHousehold['household']['Address']= request.POST['Address']
-        tempHousehold['household']['Zipcode']= request.POST['Zipcode']
-        tempHousehold['household']['City']= request.POST['City']
-        tempHousehold['household']['State']= request.POST['State']
-        tempHousehold['household']['Bedrooms']= request.POST['Bedrooms']
-
+        tempHousehold['household']['Address'] = request.POST['Address']
+        tempHousehold['household']['Zipcode'] = request.POST['Zipcode']
+        tempHousehold['household']['City'] = request.POST['City']
+        tempHousehold['household']['State'] = request.POST['State']
+        tempHousehold['household']['Bedrooms'] = request.POST['Bedrooms']
 
         return redirect("/personview")
 
@@ -64,13 +59,14 @@ def personview(request):
         # Email = request.POST['Email']
         # Age = request.POST['Age']
         # Gender = request.POST['Gender']
-
-        tempHousehold['person']['Firstname'].append(request.POST['Firstname'])
-        tempHousehold['person']['Lastname'].append(request.POST['Lastname'])
-        tempHousehold['person']['Email'].append(request.POST['Email'])
-        tempHousehold['person']['Age'].append(request.POST['Age'])
-        tempHousehold['person']['Gender'].append(request.POST['Gender'])
-
+        person = {
+            'Firstname': request.POST['Firstname'],
+            'Lastname': request.POST['Lastname'],
+            'Email': request.POST['Email'],
+            'Age': request.POST['Age'],
+            'Gender': request.POST['Gender']
+        }
+        tempHousehold['persons'].append(person)
         print(tempHousehold['person'])
 
         return redirect("/vehicleview")
@@ -78,6 +74,7 @@ def personview(request):
     else:
         # form2 = personform()
         return render(request, 'personinfo/person.html')
+
 
 def vehicleview(request):
     if request.method == "POST":
@@ -96,21 +93,30 @@ def vehicleview(request):
         return redirect("/showforms")
 
     else:
-        #form = vehicleform()
+        # form = vehicleform()
         return render(request, 'personinfo/vehicle.html')
 
+
 def showforms(request):
-    return render(request,'personinfo/list.html',{'tempHousehold':tempHousehold})
+    return render(request, 'personinfo/list.html', {'tempHousehold': tempHousehold})
 
 
 def savedata(request):
-    form1 = Household(address=tempHousehold['household']['Address'],zipcode=tempHousehold['household']['Zipcode'],city=tempHousehold['household']['City'],state=tempHousehold['household']['State'],bedrooms=tempHousehold['household']['Bedrooms'])
-    form1.save()
-    for i in range(len(tempHousehold['person']['Firstname'])):
-        form2 = Person(household=form1,first_name=tempHousehold['person']['Firstname'][i],last_name=tempHousehold['person']['Lastname'][i],email=tempHousehold['person']['Email'][i],age=tempHousehold['person']['Age'][i],gender=tempHousehold['person']['Gender'][i])
-        form2.save()
+    dbHousehold = Household(address=tempHousehold['household']['Address'],
+                            zipcode=tempHousehold['household']['Zipcode'],
+                            city=tempHousehold['household']['City'], state=tempHousehold['household']['State'],
+                            bedrooms=tempHousehold['household']['Bedrooms'])
+    dbHousehold.save()
+
+    for person in tempHousehold['persons']:
+        dbperson = Person(household=dbHousehold, first_name=person['Firstname'],
+                          last_name=person['Lastname'], email=person['Email'],
+                          age=person['Age'], gender=person['Gender'])
+        dbperson.save()
     for i in range(len(tempHousehold['vehicle']['Make'])):
-        form3 = Vehicle(person=form2,household=form1,make=tempHousehold['vehicle']['Make'][i],model_name=tempHousehold['vehicle']['Modelname'][i],year=tempHousehold['vehicle']['Year'][i],liceance_plate=tempHousehold['vehicle']['Licenceplate'][i])
+        form3 = Vehicle(person=form2, household=form1, make=tempHousehold['vehicle']['Make'][i],
+                        model_name=tempHousehold['vehicle']['Modelname'][i], year=tempHousehold['vehicle']['Year'][i],
+                        liceance_plate=tempHousehold['vehicle']['Licenceplate'][i])
         form3.save()
 
-    return render(request,'personinfo/list.html')
+    return render(request, 'personinfo/list.html')
