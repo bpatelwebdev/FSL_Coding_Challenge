@@ -11,8 +11,8 @@ from django.http import HttpResponseRedirect
 
 tempHousehold = {
     'household': {'Address':'','Zipcode':'','City':'','State':'','Bedrooms':''},
-    'person': {'Firstname':[],'Lastname':[],'Email':[],'Age':[],'Gender':[] },
-    'vehicle':{'Make':[],'Modelname':[],'Year':[],'Licenceplate':[]},
+    'persons': [{'Firstname':'','Lastname':'','Email':'','Age':'','Gender':'' }],
+    'vehicle':[{'Make':'','Modelname':'','Year':'','Licenceplate':''}],
 
 }
 
@@ -106,8 +106,11 @@ def showforms(request):
 def savedata(request):
     form1 = Household(address=tempHousehold['household']['Address'],zipcode=tempHousehold['household']['Zipcode'],city=tempHousehold['household']['City'],state=tempHousehold['household']['State'],bedrooms=tempHousehold['household']['Bedrooms'])
     form1.save()
+    for person in tempHousehold['persons']:
+        dbperson = Person(household=form1,
+        first_name=perso,last_name=tempHousehold['person']['Lastname'][i],email=tempHousehold['person']['Email'][i],age=tempHousehold['person']['Age'][i],gender=tempHousehold['person']['Gender'][i])
     for i in range(len(tempHousehold['person']['Firstname'])):
-        form2 = Person(household=form1,first_name=tempHousehold['person']['Firstname'][i],last_name=tempHousehold['person']['Lastname'][i],email=tempHousehold['person']['Email'][i],age=tempHousehold['person']['Age'][i],gender=tempHousehold['person']['Gender'][i])
+        form2 = Person()
         form2.save()
     for i in range(len(tempHousehold['vehicle']['Make'])):
         form3 = Vehicle(person=form2,household=form1,make=tempHousehold['vehicle']['Make'][i],model_name=tempHousehold['vehicle']['Modelname'][i],year=tempHousehold['vehicle']['Year'][i],liceance_plate=tempHousehold['vehicle']['Licenceplate'][i])
